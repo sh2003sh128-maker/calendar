@@ -1,0 +1,479 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>تقويم أم القرى</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=Reem+Kufi:wght@500..700&display=swap">
+<style>
+/* Layout: عمود واحد للجوال، بطاقة التاريخ الكبيرة أولًا، وشريط تنقل سفلي ثابت.
+   Tokens: حبر أخضر داكن، نحاس للمناسبات، برتقالي محروق للأعياد. */
+:root {
+  --bg: #F2F5F3; --surface: #FFFFFF; --ink: #14211D; --mute: #62726C; --line: #DCE4E0;
+  --accent: #0B6B57; --on-accent: #FFFFFF; --soft: #E3EFEA; --gold: #A8741A; --eid: #C2410C;
+  --f-body: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, 'Noto Sans Arabic', sans-serif;
+  --f-disp: 'Reem Kufi', 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1210; --surface: #141E1B; --ink: #E8F0ED; --mute: #8CA19A; --line: #24342F;
+    --accent: #3FD1A2; --on-accent: #05211A; --soft: #19302A; --gold: #E0B25A; --eid: #FB923C; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1210; --surface: #141E1B; --ink: #E8F0ED; --mute: #8CA19A; --line: #24342F;
+  --accent: #3FD1A2; --on-accent: #05211A; --soft: #19302A; --gold: #E0B25A; --eid: #FB923C; color-scheme: dark;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55;
+  direction: rtl; text-align: right;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 14px 92px;
+}
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#app { max-width: 540px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.num { font-variant-numeric: tabular-nums; }
+.mute { color: var(--mute); }
+h2 { font-size: 15px; font-weight: 700; margin: 0 0 6px; }
+
+/* بطاقة اليوم */
+.hero { background: var(--accent); color: var(--on-accent); border-radius: 22px; padding: 20px 20px 16px; text-align: right; width: 100%; display: block; }
+.hero .dow { font-size: 14px; opacity: .85; }
+.hero .row { display: flex; align-items: baseline; gap: 12px; margin-top: 2px; flex-wrap: wrap; }
+.hero .day { font-family: var(--f-disp); font-weight: 700; font-size: 84px; line-height: 1; }
+.hero .mon { font-family: var(--f-disp); font-weight: 600; font-size: 26px; line-height: 1.2; }
+.hero .alt { font-size: 17px; opacity: .92; margin-top: 6px; }
+.bar { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--on-accent) 28%, transparent); margin-top: 14px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--on-accent); }
+.hero .meta { font-size: 12.5px; opacity: .85; margin-top: 8px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+.next { text-align: center; }
+.next .name { font-family: var(--f-disp); font-size: 22px; font-weight: 600; }
+.next .count { font-family: var(--f-disp); font-weight: 700; font-size: 60px; line-height: 1.1; color: var(--accent); }
+.next .count.eid { color: var(--eid); } .next .count.major { color: var(--gold); }
+
+.moon { display: flex; align-items: center; gap: 14px; }
+.moon svg { flex: none; }
+.moon b { font-family: var(--f-disp); font-size: 19px; font-weight: 600; }
+.moon div { font-size: 13px; color: var(--mute); }
+
+.list > .it { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); text-align: right; width: 100%; }
+.list > .it:first-of-type { border-top: 0; }
+.it .t { flex: 1; min-width: 0; }
+.it .t b { display: block; font-weight: 500; }
+.it .t span { font-size: 12px; color: var(--mute); }
+.it .r { font-size: 13px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--mute); }
+.dot.eid { background: var(--eid); } .dot.major { background: var(--gold); } .dot.fast { background: var(--accent); } .dot.note { background: var(--gold); }
+
+.btn { background: var(--accent); color: var(--on-accent); border-radius: 12px; padding: 11px 16px; font-weight: 700; text-align: center; }
+.btn.soft { background: var(--soft); color: var(--accent); }
+.btn.wide { width: 100%; }
+
+/* التقويم */
+.mhead { display: flex; align-items: center; gap: 2px; }
+.mhead .ttl { flex: 1; text-align: center; min-width: 0; }
+.mhead .ttl b { display: block; font-family: var(--f-disp); font-size: 24px; font-weight: 700; line-height: 1.2; }
+.mhead .ttl span { font-size: 13px; color: var(--mute); }
+.nav { width: 38px; height: 40px; border-radius: 12px; color: var(--accent); font-size: 24px; font-weight: 700; line-height: 1; }
+.nav.y { font-size: 15px; width: 30px; opacity: .7; }
+.nav:active { background: var(--soft); }
+.wk, .grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.wk span { font-size: 11px; color: var(--mute); text-align: center; padding: 4px 0; }
+.grid { gap: 3px; }
+.cell { aspect-ratio: 1 / 1.12; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; background: var(--surface); border: 1px solid var(--line); min-width: 0; }
+.cell.empty { background: none; border: 0; }
+.cell b { font-family: var(--f-disp); font-size: 19px; font-weight: 700; line-height: 1.15; }
+.cell i { font-style: normal; font-size: 10.5px; color: var(--mute); line-height: 1.2; }
+.cell .dots { display: flex; gap: 3px; height: 6px; margin-top: 2px; }
+.cell .dots .dot { width: 5px; height: 5px; }
+.cell.fri b { color: var(--accent); }
+.cell.eidday { background: var(--soft); }
+.cell.today { background: var(--accent); border-color: var(--accent); }
+.cell.today b, .cell.today i { color: var(--on-accent); }
+.cell.today .dot { background: var(--on-accent); }
+
+/* الأدوات والإعدادات */
+.seg { display: flex; background: var(--soft); border-radius: 12px; padding: 3px; gap: 2px; }
+.seg button { flex: 1; padding: 8px 4px; border-radius: 10px; font-weight: 700; font-size: 13.5px; color: var(--mute); }
+.seg button.on { background: var(--accent); color: var(--on-accent); }
+.flds { display: flex; gap: 8px; }
+.fld { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.fld label { font-size: 11.5px; color: var(--mute); }
+input[type=number], input[type=text], select {
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 10px 8px;
+  font: inherit; font-size: 17px; text-align: center; width: 100%; min-width: 0;
+}
+input[type=text] { text-align: right; font-size: 15px; padding: 11px 12px; }
+.kv { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
+.kv span { color: var(--mute); font-size: 13.5px; } .kv b { font-weight: 500; text-align: left; }
+.res .big { font-family: var(--f-disp); font-size: 26px; font-weight: 700; color: var(--accent); }
+.step { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 8px; }
+.step button { width: 50px; height: 50px; border-radius: 50%; background: var(--soft); color: var(--accent); font-size: 26px; font-weight: 700; }
+.step div { width: 120px; text-align: center; font-family: var(--f-disp); font-size: 30px; font-weight: 700; }
+.step small { display: block; font-family: var(--f-body); font-size: 12px; font-weight: 400; color: var(--mute); }
+.stack { display: flex; flex-direction: column; gap: 10px; }
+
+/* شريط التنقل */
+.tabs { position: fixed; inset: auto 0 0 0; background: var(--surface); border-top: 1px solid var(--line); display: flex;
+  padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-right, 0px)); z-index: 5; }
+.tabs button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 0; font-size: 11.5px; font-weight: 700; color: var(--mute); }
+.tabs button svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabs button.on { color: var(--accent); }
+
+/* نافذة اليوم */
+.ov[hidden] { display: none; }
+.ov { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 20; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: var(--bg); width: 100%; max-width: 540px; max-height: 86%; overflow-y: auto; border-radius: 24px 24px 0 0;
+  padding: 18px max(18px, env(safe-area-inset-left, 0px)) calc(22px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-right, 0px)); }
+.sheet .d1 { font-family: var(--f-disp); font-size: 28px; font-weight: 700; line-height: 1.25; }
+.sheet .d2 { color: var(--mute); font-size: 16px; margin-bottom: 10px; }
+.note { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+.note div { flex: 1; min-width: 0; overflow-wrap: anywhere; } .note small { display: block; color: var(--gold); font-size: 12px; }
+.note button { color: var(--mute); font-size: 13px; padding: 6px; }
+.chk { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+.chk input { width: 20px; height: 20px; accent-color: var(--accent); }
+.row2 { display: flex; gap: 8px; } .row2 .btn { flex: 1; }
+.ev { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-weight: 500; }
+.foot { font-size: 12px; color: var(--mute); text-align: center; }
+@media (prefers-reduced-motion: no-preference) { .sheet { animation: up .22s ease-out; } @keyframes up { from { transform: translateY(24px); opacity: 0; } } }
+</style>
+
+<div id="app"></div>
+<nav class="tabs" id="tabs"></nav>
+<div class="ov" id="ov" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+
+<script>var umalqura=function(){"use strict";var DateMapping=function(){function DateMapping(monthsLengthFlags,gy,gm,gd){this.hijriMonthsLengthFlags=monthsLengthFlags;this.gregorianDate=new Date(gy,gm,gd)}return DateMapping}();var DatePart;(function(DatePart){DatePart[DatePart["Year"]=0]="Year";DatePart[DatePart["DayOfYear"]=1]="DayOfYear";DatePart[DatePart["Month"]=2]="Month";DatePart[DatePart["Day"]=3]="Day"})(DatePart||(DatePart={}));var DatePart$1=DatePart;var token=/d{1,4}|M{1,4}|yy(?:yy)?|([HhmsTt])\1?|[LlSWN]|"[^"]*"|'[^']*'/g;function pad(val,locale,len){val=String(val);len=len||2;while(val.length<len){val="0"+val}return locale.localizeNum(val)}function format(date,mask,locale,hy,hm,hd,woy,dow){mask=String(locale.masks[mask]||mask||locale.masks.default);var _="get";var d=hd;var D=date[_+"Day"]();var m=hm;var y=hy;var H=date[_+"Hours"]();var M=date[_+"Minutes"]();var s=date[_+"Seconds"]();var L=date[_+"Milliseconds"]();var W=woy;var N=dow;var flags={d:locale.localizeNum(d),dd:pad(d,locale),ddd:locale.dayNamesShort[D],dddd:locale.dayNames[D],M:locale.localizeNum(m),MM:pad(m,locale),MMM:locale.monthNamesShort[m-1],MMMM:locale.monthNames[m-1],yy:locale.localizeNum(String(y).slice(2)),yyyy:locale.localizeNum(y),h:locale.localizeNum(H%12||12),hh:pad(H%12||12,locale),H:locale.localizeNum(H),HH:pad(H,locale),m:locale.localizeNum(M),mm:pad(M,locale),s:locale.localizeNum(s),ss:pad(s,locale),l:pad(L,locale,3),L:pad(Math.round(L/10),locale),t:H<12?locale.timeNames[0]:locale.timeNames[1],tt:H<12?locale.timeNames[2]:locale.timeNames[3],T:H<12?locale.timeNames[4]:locale.timeNames[5],TT:H<12?locale.timeNames[6]:locale.timeNames[7],S:locale.localizeDayNum(d),W:locale.localizeNum(W),N:locale.localizeNum(N)};return locale.localizeCommas(mask.replace(token,function(match){return flags[match]}))}var symbolMap=["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];var dayNumMap=["الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر","الحادي عشر"];var ar={name:"ar",rtl:true,dayNamesShort:["ح","ن","ث","ر","خ","ج","س"],dayNames:["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],monthNamesShort:["محرم","صفر","ربيع ١","ربيع ٢","جمادى ١","جمادى ٢","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"],monthNames:["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"],timeNames:["ص","م","ص","م","ص","م","ص","م"],masks:{default:"ddd dd MMM yyyy HH:mm:ss",shortDate:"yy/M/d",mediumDate:"d MMM, yyyy",longDate:"d MMMM, yyyy",fullDate:"dddd, d MMMM, yyyy",shortTime:"h:mm TT",mediumTime:"h:mm:ss TT",longTime:"h:mm:ss.l TT"},localizeNum:function(num){var s=String(num);var output="";for(var i=0;i<s.length;i++){output+=symbolMap[s.charAt(i)]}return output},localizeDayNum:function(d){var output="";if(d===11){output="الحادي عشر"}else if(d===20){output="العشرون"}else if(d===30){output="الثلاثون"}else{output=dayNumMap[d-1]}var section=d/10;if(section>1.1&&section<2){output=dayNumMap[(d-1)%10]+" عشر"}else if(section>2&&section<3){output=dayNumMap[(d-1)%10]+" والعشرون"}return output+" من"},localizeCommas:function(v){return v.replace(/,/g,"،")}};var en={name:"en",dayNamesShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],dayNames:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],monthNamesShort:["Muh","Ṣaf","Rab-I","Rab-II","Jum-I","Jum-II","Raj","Sha","Ram","Shw","Dhū-Q","Dhū-Ḥ"],monthNames:["Muharram","Ṣafar","Rabīʿ al-Awwal","Rabīʿ ath-Thānī","Jumādá al-Ūlá","Jumādá al-Ākhirah","Rajab","Sha‘bān","Ramaḍān","Shawwāl","Dhū al-Qa‘dah","Dhū al-Ḥijjah"],timeNames:["a","p","am","pm","A","P","AM","PM"],masks:{default:"ddd MMM dd yyyy HH:mm:ss",shortDate:"M/d/yy",mediumDate:"MMM d, yyyy",longDate:"MMMM d, yyyy",fullDate:"dddd, MMMM d, yyyy",shortTime:"h:mm TT",mediumTime:"h:mm:ss TT",longTime:"h:mm:ss.l TT"},localizeNum:function(num){return String(num)},localizeDayNum:function(d){return["th","st","nd","rd"][d%10>3?0:(d%100-d%10!==10)*d%10]},localizeCommas:function(v){return v}};var UmAlQuraStatic=function(){function UmAlQuraStatic(){}UmAlQuraStatic.hijriToGregorian=function(hy,hm,hd){this._checkYearRange(hy);this._checkMonthRange(hm);this._checkDayRange(hd);var nDays=hd-1;var index=hy-this.minCalendarYear;var dt=this.hijriYearData[index].gregorianDate;var b=this.hijriYearData[index].hijriMonthsLengthFlags;for(var m=1;m<hm;m++){nDays=nDays+29+(b&1);b>>=1}dt=this.addDays(dt,nDays);return{gy:dt.getFullYear(),gm:dt.getMonth(),gd:dt.getDate()}};UmAlQuraStatic.gregorianToHijri=function(date){this._checkMillsRange(date.getTime());var index=Math.trunc((date.getTime()-this.minDate.getTime())/this.millisPerDay/355);do{}while(date.getTime()>this.hijriYearData[++index].gregorianDate.getTime());if(date.getTime()!==this.hijriYearData[index].gregorianDate.getTime()){index--}var nDays=this._dayDiff(date,this.hijriYearData[index].gregorianDate);var yh1=index+this.minCalendarYear;var mh1=1;var dh1=1;var b=this.hijriYearData[index].hijriMonthsLengthFlags;var daysPerThisMonth=29+(b&1);while(nDays>=daysPerThisMonth){nDays-=daysPerThisMonth;b>>=1;daysPerThisMonth=29+(b&1);mh1++}dh1+=Math.trunc(nDays);return{hy:yh1,hm:mh1,hd:dh1}};UmAlQuraStatic.addYears=function(date,hys){return this.addMonths(date,hys*12)};UmAlQuraStatic.addMonths=function(date,hms){var y=this._getDatePart(date,DatePart$1.Year);var m=this._getDatePart(date,DatePart$1.Month);var d=this._getDatePart(date,DatePart$1.Day);var i=m-1+hms;if(i>=0){m=i%12+1;y+=Math.trunc(i/12)}else{m=12+(i+1)%12;y+=Math.trunc((i-11)/12)}if(d>29){var days=this.getDaysInMonth(y,m);if(d>days){d=days}}var _a=this.hijriToGregorian(y,m,d),gy=_a.gy,gm=_a.gm,gd=_a.gd;return this._setTime(new Date(gy,gm,gd),date.getHours(),date.getMinutes(),date.getSeconds(),date.getMilliseconds())};UmAlQuraStatic.addWeeks=function(date,wks){return this.addDays(date,wks*7)};UmAlQuraStatic.addDays=function(date,days){var d=new Date(date.valueOf());d.setDate(d.getDate()+days);return d};UmAlQuraStatic.addTime=function(date,value,unit){var d=new Date(date.valueOf());switch(unit){case"hour":d.setHours(d.getHours()+value);break;case"minute":d.setMinutes(d.getMinutes()+value);break;case"second":d.setSeconds(d.getSeconds()+value);break;case"millisecond":d.setMilliseconds(d.getMilliseconds()+value);break;default:throw new Error("Invalid value for `unit` param")}return d};UmAlQuraStatic.getDayOfYear=function(date){return this._getDatePart(date,DatePart$1.DayOfYear)};UmAlQuraStatic.getDayOfMonth=function(date){return this._getDatePart(date,DatePart$1.Day)};UmAlQuraStatic.getDayOfWeek=function(date){return date.getDay()};UmAlQuraStatic.getWeekOfYear=function(date){var firstDayOfYear=this.startOf(date,"year").getDay();var daysToDayOfWeek=firstDayOfYear-date.getDay();var d=this.addDays(date,daysToDayOfWeek);return Math.ceil(this.getDayOfYear(d)/7)};UmAlQuraStatic.getDaysInYear=function(hy){this._checkYearRange(hy);var days=0;var b=this.hijriYearData[hy-this.minCalendarYear].hijriMonthsLengthFlags;for(var m=1;m<=12;m++){days=days+29+(b&1);b>>=1}if(days!==354&&days!==355){throw new Error("Days in year assert error. This is possibly a bug.")}return days};UmAlQuraStatic.getDaysInMonth=function(hy,hm){this._checkYearRange(hy);this._checkMonthRange(hm);if((this.hijriYearData[hy-this.minCalendarYear].hijriMonthsLengthFlags&1<<hm-1)===0){return 29}else{return 30}};UmAlQuraStatic.getYear=function(date){return this._getDatePart(date,DatePart$1.Year)};UmAlQuraStatic.getMonth=function(date){return this._getDatePart(date,DatePart$1.Month)};UmAlQuraStatic.getMonthArray=function(date){var weeks=[];var month=this.getMonth(date);var start=this.startOf(this.startOf(date,"month"),"week");var end=this.endOf(this.endOf(date,"month"),"week");var i=0;while(start<end){var w=Math.floor(i/7);var day=new Date(start.valueOf());weeks[w]=weeks[w]||[];weeks[w].push(this.getMonth(day)===month?day:null);start.setDate(start.getDate()+1);i++}return weeks};UmAlQuraStatic.startOf=function(date,unit){var d=new Date(date);var _a=this.gregorianToHijri(d),hy=_a.hy,hm=_a.hm;switch(unit){case"year":return this.toDate(hy,1,1,0,0,0,0);case"month":return this.toDate(hy,hm,1,0,0,0,0);case"week":var dow=this.getDayOfWeek(d);d=this.addDays(d,-dow);case"day":d.setHours(0);case"hour":d.setMinutes(0);case"minute":d.setSeconds(0);case"second":d.setMilliseconds(0);break;default:throw new Error("Invalid value for `unit` param")}return d};UmAlQuraStatic.endOf=function(date,unit){var d=new Date(date);var _a=this.gregorianToHijri(d),hy=_a.hy,hm=_a.hm;var daysInMonth;switch(unit){case"year":daysInMonth=this.getDaysInMonth(hy,12);return this.toDate(hy,12,daysInMonth,23,59,59,999);case"month":daysInMonth=this.getDaysInMonth(hy,hm);return this.toDate(hy,hm,daysInMonth,23,59,59,999);case"week":var dow=this.getDayOfWeek(d);d=this.addDays(d,6-dow);case"day":d.setHours(23);case"hour":d.setMinutes(59);case"minute":d.setSeconds(59);case"second":d.setMilliseconds(999);break;default:throw new Error("Invalid value for `unit` param")}return d};UmAlQuraStatic.isLeapYear=function(hy){return this.getDaysInYear(hy)===355};UmAlQuraStatic.toDate=function(hy,hm,hd,hour,minute,second,millisecond){if(hour===void 0){hour=0}if(minute===void 0){minute=0}if(second===void 0){second=0}if(millisecond===void 0){millisecond=0}var daysInMonth=this.getDaysInMonth(hy,hm);if(hd<1||hd>daysInMonth){throw new Error("Invalid value for day for the given year/month. Day must be between 1 and "+daysInMonth+".")}if(hour<0||hour>=24||minute<0||minute>=60||second<0||second>=60||millisecond<0||millisecond>=this.millisPerSecond){throw new Error("Invalid value for hour, minute, second or millisecond.")}var _a=this.hijriToGregorian(hy,hm,hd),gy=_a.gy,gm=_a.gm,gd=_a.gd;return this._setTime(new Date(gy,gm,gd),hour,minute,second,millisecond)};UmAlQuraStatic.format=function(date,mask,locale){var _a=this.gregorianToHijri(date),hy=_a.hy,hm=_a.hm,hd=_a.hd;return format(date,mask,locale?this._loadLocale(locale):this.locale,hy,hm,hd,this.getWeekOfYear(date),this.getDayOfWeek(date))};UmAlQuraStatic.setLocale=function(locale){this.locale=this._loadLocale(locale)};UmAlQuraStatic.registerLocale=function(locale){if(!locale.name){throw new Error("The locale's 'name' property must not be empty.")}if(this.locales[locale.name]){throw new Error("A locale with the same name '"+locale.name+"' is already registered.")}this.locales[locale.name]=locale};UmAlQuraStatic._loadLocale=function(locale){if(this.locales[locale]){return this.locales[locale]}console.warn("The requested locale '"+locale+"' could not be found. Using the default locale instead.");return en};UmAlQuraStatic._getDatePart=function(date,part){var _a=this.gregorianToHijri(date),hy=_a.hy,hm=_a.hm,hd=_a.hd;switch(part){case DatePart$1.Year:return hy;case DatePart$1.Month:return hm;case DatePart$1.Day:return hd;case DatePart$1.DayOfYear:return Math.trunc(this._getAbsoluteDateUmAlQura(hy,hm,hd)-this._getAbsoluteDateUmAlQura(hy,1,1)+1)}};UmAlQuraStatic._setTime=function(date,hour,minute,second,millisecond){date.setHours(hour);date.setMinutes(minute);date.setSeconds(second);date.setMilliseconds(millisecond);return date};UmAlQuraStatic._getAbsoluteDateUmAlQura=function(hy,hm,hd){var _a=this.hijriToGregorian(hy,hm,hd),gy=_a.gy,gm=_a.gm,gd=_a.gd;return new Date(gy,gm,gd).getTime()/this.millisPerDay};UmAlQuraStatic._checkYearRange=function(hy){if(hy<this.minCalendarYear||hy>this.maxCalendarYear){throw new Error("Invalid value for year. Must be between "+this.minCalendarYear+" and "+this.maxCalendarYear+".")}};UmAlQuraStatic._checkMonthRange=function(hm){if(hm<1||hm>12){throw new Error("Invalid value for month. Must be between 1 and 12.")}};UmAlQuraStatic._checkDayRange=function(day){if(day<1||day>30){throw new Error("Invalid value for day. Must be between 1 and 30.")}};UmAlQuraStatic._checkMillsRange=function(millis){if(millis<this.minDate.getTime()||millis>this.maxDate.getTime()){throw new Error("Invalid value for epoch. Must be between "+this.minDate.getTime()+" and "+this.maxDate.getTime()+".")}};UmAlQuraStatic._dayDiff=function(date,other){return(date.getTime()-other.getTime())/(1e3*60*60*24)};UmAlQuraStatic._initDateMapping=function(){var rawData=[746,1900,4,30,1769,1901,4,19,3794,1902,4,9,3748,1903,3,30,3402,1904,3,18,2710,1905,3,7,1334,1906,2,24,2741,1907,2,13,3498,1908,2,3,2980,1909,1,23,2889,1910,1,12,2707,1911,1,1,1323,1911,12,21,2647,1912,12,9,1206,1913,11,29,2741,1914,11,18,1450,1915,11,8,3413,1916,10,27,3370,1917,10,17,2646,1918,10,6,1198,1919,9,25,2397,1920,9,13,748,1921,9,3,1749,1922,8,23,1706,1923,8,13,1365,1924,8,1,1195,1925,7,21,2395,1926,7,10,698,1927,6,30,1397,1928,6,18,2994,1929,6,8,1892,1930,5,29,1865,1931,5,18,1621,1932,5,6,683,1933,4,25,1371,1934,4,14,2778,1935,4,4,1748,1936,3,24,3785,1937,3,13,3474,1938,3,3,3365,1939,2,20,2637,1940,2,9,685,1941,1,28,1389,1942,1,17,2922,1943,1,7,2898,1943,12,28,2725,1944,12,16,2635,1945,12,5,1175,1946,11,24,2359,1947,11,13,694,1948,11,2,1397,1949,10,22,3434,1950,10,12,3410,1951,10,2,2710,1952,9,20,2349,1953,9,9,605,1954,8,29,1245,1955,8,18,2778,1956,8,7,1492,1957,7,28,3497,1958,7,17,3410,1959,7,7,2730,1960,6,25,1238,1961,6,14,2486,1962,6,3,884,1963,5,24,1897,1964,5,12,1874,1965,5,2,1701,1966,4,21,1355,1967,4,10,2731,1968,3,29,1370,1969,3,19,2773,1970,3,8,3538,1971,2,26,3492,1972,2,16,3401,1973,2,4,2709,1974,1,24,1325,1975,1,13,2653,1976,1,2,1370,1976,12,22,2773,1977,12,11,1706,1978,12,1,1685,1979,11,20,1323,1980,11,8,2647,1981,10,28,1198,1982,10,18,2422,1983,10,7,1388,1984,9,26,2901,1985,9,15,2730,1986,9,5,2645,1987,8,25,1197,1988,8,13,2397,1989,8,2,730,1990,7,23,1497,1991,7,12,3506,1992,7,1,2980,1993,6,21,2890,1994,6,10,2645,1995,5,30,693,1996,5,18,1397,1997,5,7,2922,1998,4,27,3026,1999,4,17,3012,2e3,4,6,2953,2001,3,26,2709,2002,3,15,1325,2003,3,4,1453,2004,2,21,2922,2005,2,10,1748,2006,1,31,3529,2007,1,20,3474,2008,1,10,2726,2008,12,29,2390,2009,12,18,686,2010,12,7,1389,2011,11,26,874,2012,11,15,2901,2013,11,4,2730,2014,10,25,2381,2015,10,14,1181,2016,10,2,2397,2017,9,21,698,2018,9,11,1461,2019,8,31,1450,2020,8,20,3413,2021,8,9,2714,2022,7,30,2350,2023,7,19,622,2024,7,7,1373,2025,6,26,2778,2026,6,16,1748,2027,6,6,1701,2028,5,25,1355,2029,5,14,2711,2030,5,3,1358,2031,4,23,2734,2032,4,11,1452,2033,4,1,2985,2034,3,21,3474,2035,3,11,2853,2036,2,28,1611,2037,2,16,3243,2038,2,5,1370,2039,1,26,2901,2040,1,15,1746,2041,1,4,3749,2041,12,24,3658,2042,12,14,2709,2043,12,3,1325,2044,11,21,2733,2045,11,10,876,2046,10,31,1881,2047,10,20,1746,2048,10,9,1685,2049,9,28,1325,2050,9,17,2651,2051,9,6,1210,2052,8,26,2490,2053,8,15,948,2054,8,5,2921,2055,7,25,2898,2056,7,14,2726,2057,7,3,1206,2058,6,22,2413,2059,6,11,748,2060,5,31,1753,2061,5,20,3762,2062,5,10,3412,2063,4,30,3370,2064,4,18,2646,2065,4,7,1198,2066,3,27,2413,2067,3,16,3434,2068,3,5,2900,2069,2,23,2857,2070,2,12,2707,2071,2,1,1323,2072,1,21,2647,2073,1,9,1334,2073,12,30,2741,2074,12,19,1706,2075,12,9,3731,2076,11,27,0,2077,11,17];var mapping=[];for(var i=0;i<rawData.length/4;i++){mapping.push(new DateMapping(rawData[i*4],rawData[i*4+1],rawData[i*4+2]-1,rawData[i*4+3]))}return mapping};UmAlQuraStatic.millisPerSecond=1e3;UmAlQuraStatic.millisPerMinute=UmAlQuraStatic.millisPerSecond*60;UmAlQuraStatic.millisPerHour=UmAlQuraStatic.millisPerMinute*60;UmAlQuraStatic.millisPerDay=UmAlQuraStatic.millisPerHour*24;UmAlQuraStatic.minDate=new Date(1900,3,30);UmAlQuraStatic.maxDate=new Date(2077,10,16,23,59,59,999);UmAlQuraStatic.hijriYearData=UmAlQuraStatic._initDateMapping();UmAlQuraStatic.locale=en;UmAlQuraStatic.locales={};UmAlQuraStatic.minCalendarYear=1318;UmAlQuraStatic.maxCalendarYear=1500;return UmAlQuraStatic}();UmAlQuraStatic.registerLocale(ar);UmAlQuraStatic.registerLocale(en);var UmAlQura=function(){function UmAlQura(dateOrHy,hm,hd,hour,minute,second,millisecond){if(hour===void 0){hour=0}if(minute===void 0){minute=0}if(second===void 0){second=0}if(millisecond===void 0){millisecond=0}this._date=new Date(0,0,0);this._hy=0;this._hm=0;this._hd=0;if(dateOrHy instanceof Date){this._setDate(dateOrHy)}else if(dateOrHy!==undefined&&hm!==undefined&&hd!==undefined){var _a=UmAlQuraStatic.hijriToGregorian(dateOrHy,hm,hd),gy=_a.gy,gm=_a.gm,gd=_a.gd;this._setDate(new Date(gy,gm,gd,hour,minute,second,millisecond))}else{this._setDate(new Date)}}Object.defineProperty(UmAlQura.prototype,"date",{get:function(){return new Date(this._date.valueOf())},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"hy",{get:function(){return this._hy},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"hm",{get:function(){return this._hm},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"hd",{get:function(){return this._hd},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"dayOfYear",{get:function(){return UmAlQuraStatic.getDayOfYear(this.date)},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"dayOfWeek",{get:function(){return UmAlQuraStatic.getDayOfWeek(this.date)},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"weekOfYear",{get:function(){return UmAlQuraStatic.getWeekOfYear(this.date)},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"daysInYear",{get:function(){return UmAlQuraStatic.getDaysInYear(this.hy)},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"daysInMonth",{get:function(){return UmAlQuraStatic.getDaysInMonth(this.hy,this.hm)},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"isLeapYear",{get:function(){return UmAlQuraStatic.isLeapYear(this.hy)},enumerable:true,configurable:true});Object.defineProperty(UmAlQura.prototype,"monthArray",{get:function(){return UmAlQuraStatic.getMonthArray(this.date).map(function(w){return w.map(function(d){return d?new UmAlQura(d):null})})},enumerable:true,configurable:true});UmAlQura.prototype.add=function(value,unit){switch(unit){case"year":return new UmAlQura(UmAlQuraStatic.addYears(this.date,value));case"month":return new UmAlQura(UmAlQuraStatic.addMonths(this.date,value));case"week":return new UmAlQura(UmAlQuraStatic.addWeeks(this.date,value));case"day":return new UmAlQura(UmAlQuraStatic.addDays(this.date,value));case"hour":case"minute":case"second":case"millisecond":return new UmAlQura(UmAlQuraStatic.addTime(this.date,value,unit));default:throw new Error("Invalid value for `unit`")}};UmAlQura.prototype.subtract=function(value,unit){return this.add(value*-1,unit)};UmAlQura.prototype.startOf=function(unit){return new UmAlQura(UmAlQuraStatic.startOf(this.date,unit))};UmAlQura.prototype.endOf=function(unit){return new UmAlQura(UmAlQuraStatic.endOf(this.date,unit))};UmAlQura.prototype.isBefore=function(other,unit){if(unit===void 0){unit="millisecond"}var thisDate=this.date;var thatDate=other instanceof Date?other:other.date;if(unit==="millisecond"){return thisDate.valueOf()<thatDate.valueOf()}else{return this.endOf(unit).date.valueOf()<thatDate.valueOf()}};UmAlQura.prototype.isAfter=function(other,unit){if(unit===void 0){unit="millisecond"}var thisDate=this.date;var thatDate=other instanceof Date?other:other.date;if(unit==="millisecond"){return thisDate.valueOf()>thatDate.valueOf()}else{return this.startOf(unit).date.valueOf()>thatDate.valueOf()}};UmAlQura.prototype.isSame=function(other,unit){if(unit===void 0){unit="millisecond"}var thisDate=this.date;var thatDate=other instanceof Date?other:other.date;if(unit==="millisecond"){return thisDate.valueOf()===thatDate.valueOf()}else{return this.startOf(unit).date.valueOf()===new UmAlQura(thatDate).startOf(unit).date.valueOf()}};UmAlQura.prototype.isSameOrBefore=function(other,unit){if(unit===void 0){unit="millisecond"}return this.isSame(other,unit)||this.isBefore(other,unit)};UmAlQura.prototype.isSameOrAfter=function(other,unit){if(unit===void 0){unit="millisecond"}return this.isSame(other,unit)||this.isAfter(other,unit)};UmAlQura.prototype.isBetween=function(from,to,fromInclusive,toInclusive,unit){if(fromInclusive===void 0){fromInclusive=false}if(toInclusive===void 0){toInclusive=false}if(unit===void 0){unit="millisecond"}return(fromInclusive?this.isSameOrAfter(from,unit):this.isAfter(from,unit))&&(toInclusive?this.isSameOrBefore(to,unit):this.isBefore(to,unit))};UmAlQura.prototype.format=function(mask,locale){return UmAlQuraStatic.format(this.date,mask,locale||UmAlQuraStatic["locale"].name)};UmAlQura.prototype.clone=function(){return new UmAlQura(this.date)};UmAlQura.prototype._setDate=function(date){var _a=UmAlQuraStatic.gregorianToHijri(date),hy=_a.hy,hm=_a.hm,hd=_a.hd;this._date=new Date(date.valueOf());this._hy=hy;this._hm=hm;this._hd=hd};return UmAlQura}();function umalqura(dateOrHy,hm,hd,hour,minute,second,millisecond){if(hour===void 0){hour=0}if(minute===void 0){minute=0}if(second===void 0){second=0}if(millisecond===void 0){millisecond=0}if(dateOrHy instanceof Date){return new UmAlQura(dateOrHy)}else if(dateOrHy!==undefined&&hm!==undefined&&hd!==undefined){return new UmAlQura(dateOrHy,hm,hd,hour,minute,second,millisecond)}else{return new UmAlQura}}umalqura.VERSION="0.0.7";umalqura.$=UmAlQuraStatic;umalqura.min=umalqura(UmAlQuraStatic["minCalendarYear"],1,1);umalqura.max=umalqura(UmAlQuraStatic["maxCalendarYear"],1,1).endOf("year");umalqura.locale=function(locale){return locale?UmAlQuraStatic.setLocale(locale):UmAlQuraStatic["locale"].name};umalqura.rtl=function(){return!!UmAlQuraStatic["locale"].rtl};umalqura.times=function(){return UmAlQuraStatic["locale"].timeNames.slice()};umalqura.days=function(){return UmAlQuraStatic["locale"].dayNames.slice()};umalqura.daysShort=function(){return UmAlQuraStatic["locale"].dayNamesShort.slice()};umalqura.months=function(){return UmAlQuraStatic["locale"].monthNames.slice()};umalqura.monthsShort=function(){return UmAlQuraStatic["locale"].monthNamesShort.slice()};umalqura.localizeNum=function(num){return UmAlQuraStatic["locale"].localizeNum(num)};umalqura.localizeDayNum=function(d){return UmAlQuraStatic["locale"].localizeDayNum(d)};return umalqura}();</script>
+<script>
+(function () {
+  'use strict';
+  document.documentElement.lang = 'ar';
+  document.documentElement.dir = 'rtl';
+  var uq = window.umalqura;
+
+  /* ---------- تخزين محلي (يعمل بدون أي خادم) ---------- */
+  function lsGet(k, f) { try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : f; } catch (e) { return f; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var S = Object.assign({ primary: 'h', adj: 0, weekStart: 6, digits: true }, lsGet('hc_settings', {}));
+  var NOTES = lsGet('hc_notes', []);
+  if (!Array.isArray(NOTES)) NOTES = [];
+
+  /* ---------- أدوات التاريخ ---------- */
+  var H_MONTHS = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'];
+  var G_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+  var WD = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  var WD_S = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+  var HMIN = 1318, HMAX = 1499;
+
+  function noon(y, m, d) { return new Date(y, m - 1, d, 12); }
+  function sod(d) { return noon(d.getFullYear(), d.getMonth() + 1, d.getDate()); }
+  function addDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, 12); }
+  function diffDays(a, b) { return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000); }
+  function gdim(y, m) { return new Date(y, m, 0).getDate(); }
+  function key(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function fromKey(k) { var p = k.split('-'); return noon(+p[0], +p[1], +p[2]); }
+  function n(x) { var s = String(x); return S.digits ? s.replace(/\d/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'[d]; }) : s; }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  function toH(date) { var h = uq(addDays(date, S.adj)); return { y: h.hy, m: h.hm, d: h.hd, dim: h.daysInMonth, doy: h.dayOfYear }; }
+  function hdim(y, m) { return uq(y, m, 1).daysInMonth; }
+  function fromH(y, m, d) {
+    var dd = Math.min(Math.max(d, 1), hdim(y, m)), g = uq(y, m, dd).date;
+    return addDays(noon(g.getFullYear(), g.getMonth() + 1, g.getDate()), -S.adj);
+  }
+  function fG(d) { return n(d.getDate()) + ' ' + G_MONTHS[d.getMonth()] + ' ' + n(d.getFullYear()) + ' م'; }
+  function fH(h) { return n(h.d) + ' ' + H_MONTHS[h.m - 1] + ' ' + n(h.y) + ' هـ'; }
+
+  /* ---------- المناسبات ---------- */
+  var HE = [
+    [1, 1, 'رأس السنة الهجرية', 'major', 1], [1, 9, 'تاسوعاء (يُستحب صيامه)', 'fast'], [1, 10, 'يوم عاشوراء', 'fast', 1],
+    [3, 12, 'المولد النبوي', 'minor', 1], [7, 27, 'الإسراء والمعراج', 'minor'], [8, 15, 'ليلة النصف من شعبان', 'minor'],
+    [9, 1, 'أول يوم من رمضان', 'major', 1], [9, 21, 'بداية العشر الأواخر', 'minor'], [9, 27, 'ليلة القدر المرجّحة', 'minor', 1],
+    [10, 1, 'عيد الفطر', 'eid', 1], [10, 2, 'عيد الفطر (اليوم الثاني)', 'eid'], [10, 3, 'عيد الفطر (اليوم الثالث)', 'eid'],
+    [12, 1, 'بداية العشر من ذي الحجة', 'major', 1], [12, 8, 'يوم التروية', 'minor'], [12, 9, 'يوم عرفة', 'fast', 1],
+    [12, 10, 'عيد الأضحى', 'eid', 1], [12, 11, 'أيام التشريق', 'eid'], [12, 12, 'أيام التشريق', 'eid'], [12, 13, 'أيام التشريق', 'eid']
+  ];
+  var GE = [[2, 22, 'يوم التأسيس السعودي', 'major', 1], [9, 23, 'اليوم الوطني السعودي', 'major', 1]];
+
+  function occ(date, h) {
+    var out = [], i;
+    for (i = 0; i < HE.length; i++) if (HE[i][0] === h.m && HE[i][1] === h.d) out.push({ name: HE[i][2], type: HE[i][3], cd: HE[i][4] });
+    if (h.m === 9 && [21, 23, 25, 29].indexOf(h.d) >= 0) out.push({ name: 'ليلة وتر من العشر الأواخر', type: 'minor', minor: 1 });
+    if (h.d >= 13 && h.d <= 15 && !(h.m === 12 && h.d === 13)) out.push({ name: 'من الأيام البيض (يُستحب صيامه)', type: 'fast', minor: 1 });
+    for (i = 0; i < GE.length; i++) if (GE[i][0] === date.getMonth() + 1 && GE[i][1] === date.getDate()) out.push({ name: GE[i][2], type: GE[i][3], cd: GE[i][4] });
+    return out;
+  }
+  function upcoming(from, limit) {
+    var seen = {}, list = [], i, d, h, e, j;
+    for (i = 0; i <= 366; i++) {
+      d = addDays(from, i); h = toH(d); e = occ(d, h);
+      for (j = 0; j < e.length; j++) if (e[j].cd && !seen[e[j].name]) { seen[e[j].name] = 1; list.push({ name: e[j].name, type: e[j].type, date: d, h: h, days: i }); }
+    }
+    return list.sort(function (a, b) { return a.days - b.days; }).slice(0, limit);
+  }
+
+  /* ---------- القمر (تقريبي) ---------- */
+  var SYN = 29.530588853;
+  var PH = ['محاق', 'هلال متزايد', 'تربيع أول', 'أحدب متزايد', 'بدر', 'أحدب متناقص', 'تربيع أخير', 'هلال متناقص'];
+  function moon(date) {
+    var jd = date.getTime() / 86400000 + 2440587.5, age = (((jd - 2451550.1) % SYN) + SYN) % SYN, f = age / SYN;
+    return { f: f, name: PH[Math.floor(f * 8 + 0.5) % 8], illum: Math.round((1 - Math.cos(2 * Math.PI * f)) / 2 * 100), age: Math.round(age),
+      toNew: Math.round(SYN - age), toFull: Math.round((((0.5 - f) + 1) % 1) * SYN) };
+  }
+  function moonSvg(f, s) {
+    var r = 30, c = 32, k = Math.cos(2 * Math.PI * f), rx = Math.abs(k) * r, waxing = f < 0.5, lit;
+    if (waxing) lit = 'M' + c + ' ' + (c - r) + ' A' + r + ' ' + r + ' 0 0 1 ' + c + ' ' + (c + r) + ' A' + rx.toFixed(2) + ' ' + r + ' 0 0 ' + (k > 0 ? 0 : 1) + ' ' + c + ' ' + (c - r) + 'Z';
+    else lit = 'M' + c + ' ' + (c - r) + ' A' + r + ' ' + r + ' 0 0 0 ' + c + ' ' + (c + r) + ' A' + rx.toFixed(2) + ' ' + r + ' 0 0 ' + (k > 0 ? 1 : 0) + ' ' + c + ' ' + (c - r) + 'Z';
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="var(--soft)" stroke="var(--line)"/><path d="' + lit + '" fill="var(--gold)"/></svg>';
+  }
+
+  /* ---------- الشبكة والفروقات ---------- */
+  function monthGrid(mode, y, m) {
+    var first, cnt, days = [], i, d;
+    if (mode === 'h') { first = fromH(y, m, 1); cnt = hdim(y, m); } else { first = noon(y, m, 1); cnt = gdim(y, m); }
+    for (i = 0; i < cnt; i++) { d = addDays(first, i); var h = toH(d); days.push({ date: d, h: h, ev: occ(d, h) }); }
+    var lead = (first.getDay() - S.weekStart + 7) % 7, cells = [];
+    for (i = 0; i < lead; i++) cells.push(null);
+    cells = cells.concat(days);
+    while (cells.length % 7) cells.push(null);
+    return { cells: cells, days: days };
+  }
+  function ymd(a, b, prev) {
+    var y = b.y - a.y, m = b.m - a.m, d = b.d - a.d;
+    if (d < 0) { m--; d += prev(b); }
+    if (m < 0) { y--; m += 12; }
+    return { y: y, m: m, d: d };
+  }
+  function gprev(b) { return gdim(b.m === 1 ? b.y - 1 : b.y, b.m === 1 ? 12 : b.m - 1); }
+  function hprev(b) { return hdim(b.m === 1 ? b.y - 1 : b.y, b.m === 1 ? 12 : b.m - 1); }
+  function gp(d) { return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() }; }
+  function dateDiff(from, to) {
+    var a = from, b = to;
+    if (diffDays(from, to) < 0) { a = to; b = from; }
+    var t = diffDays(a, b);
+    return { total: t, weeks: Math.floor(t / 7), rest: t % 7, g: ymd(gp(a), gp(b), gprev), h: ymd(toH(a), toH(b), hprev) };
+  }
+  function nextBirthday(birth, t) {
+    var gy = t.getFullYear(), gm = birth.getMonth() + 1, gd = birth.getDate();
+    var gdte = noon(gy, gm, Math.min(gd, gdim(gy, gm)));
+    if (diffDays(t, gdte) < 0) { gy++; gdte = noon(gy, gm, Math.min(gd, gdim(gy, gm))); }
+    var hb = toH(birth), ht = toH(t), hy = ht.y, hd = fromH(hy, hb.m, hb.d);
+    if (diffDays(t, hd) < 0) { hy++; hd = fromH(hy, hb.m, hb.d); }
+    return { g: diffDays(t, gdte), h: diffDays(t, hd), hDate: hd };
+  }
+  function noteHit(nt, date, h) {
+    if (nt.cal === 'h') return nt.yearly ? (h.m === nt.m && h.d === nt.d) : (h.y === nt.y && h.m === nt.m && h.d === nt.d);
+    var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+    return nt.yearly ? (m === nt.m && d === nt.d) : (y === nt.y && m === nt.m && d === nt.d);
+  }
+
+  /* ---------- الحالة ---------- */
+  var today = sod(new Date()), view = 'today', tool = 'conv', sel = null, pos = startPos();
+  function startPos() { if (S.primary === 'h') { var h = toH(today); return { y: h.y, m: h.m }; } return { y: today.getFullYear(), m: today.getMonth() + 1 }; }
+  function okYear(y) { return S.primary === 'h' ? (y >= HMIN && y <= HMAX) : (y >= 1901 && y <= 2076); }
+
+  /* ---------- الواجهات ---------- */
+  var $app = document.getElementById('app');
+  var ICON = {
+    today: '<svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg>',
+    month: '<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
+    tools: '<svg viewBox="0 0 24 24"><path d="M5 19L19 5M7 7l3-3 3 3M14 17l3 3 3-3"/><circle cx="6" cy="18" r="1.5"/></svg>',
+    settings: '<svg viewBox="0 0 24 24"><path d="M5 7h9M18 7h1M5 17h1M10 17h9"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>'
+  };
+  var TABS = [['today', 'اليوم'], ['month', 'التقويم'], ['tools', 'أدوات'], ['settings', 'الإعدادات']];
+
+  function renderTabs() {
+    document.getElementById('tabs').innerHTML = TABS.map(function (t) {
+      return '<button data-act="tab" data-v="' + t[0] + '" class="' + (view === t[0] ? 'on' : '') + '">' + ICON[t[0]] + t[1] + '</button>';
+    }).join('');
+  }
+  function seg(k, opts, val) {
+    return '<div class="seg">' + opts.map(function (o) {
+      return '<button data-act="set" data-k="' + k + '" data-v="' + o[0] + '" class="' + (String(o[0]) === String(val) ? 'on' : '') + '">' + o[1] + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function vToday() {
+    var h = toH(today), m = moon(today), up = upcoming(today, 6), hero = up[0];
+    var hp = S.primary === 'h', dayN = hp ? h.d : today.getDate();
+    var mon = hp ? H_MONTHS[h.m - 1] + ' ' + n(h.y) + ' هـ' : G_MONTHS[today.getMonth()] + ' ' + n(today.getFullYear()) + ' م';
+    var alt = hp ? fG(today) : fH(h);
+    var tn = NOTES.filter(function (x) { return noteHit(x, today, h); });
+    var html = '<button class="hero" data-act="day" data-k="' + key(today) + '"><div class="dow">' + WD[today.getDay()] + '</div>' +
+      '<div class="row"><span class="day num">' + n(dayN) + '</span><span class="mon">' + mon + '</span></div>' +
+      '<div class="alt">' + alt + '</div><div class="bar"><i style="width:' + (h.d / h.dim * 100).toFixed(1) + '%"></i></div>' +
+      '<div class="meta">اليوم ' + n(h.d) + ' من ' + n(h.dim) + ' في ' + H_MONTHS[h.m - 1] + '، متبقٍ ' + n(h.dim - h.d) + ' يوم، اليوم ' + n(h.doy) + ' من السنة الهجرية</div></button>';
+    if (hero) html += '<div class="card next"><div class="mute" style="font-size:13px">المناسبة القادمة</div><div class="name">' + esc(hero.name) + '</div>' +
+      '<div class="count ' + hero.type + '">' + (hero.days === 0 ? 'اليوم' : n(hero.days)) + '</div>' + (hero.days ? '<div class="mute">يومًا</div>' : '') +
+      '<div class="mute" style="font-size:13px;margin-top:4px">' + fH(hero.h) + '، ' + fG(hero.date) + '</div></div>';
+    html += '<div class="card moon">' + moonSvg(m.f, 64) + '<div><b>' + m.name + '</b><div>إضاءة القمر ' + n(m.illum) + '٪، عمره ' + n(m.age) + ' يوم</div><div>البدر بعد ' + n(m.toFull) + ' يوم، المحاق بعد ' + n(m.toNew) + ' يوم</div></div></div>';
+    html += '<div class="card list"><h2>مناسبات قادمة</h2>' + up.slice(1).map(function (e) {
+      return '<div class="it"><span class="dot ' + e.type + '"></span><div class="t"><b>' + esc(e.name) + '</b><span>' + fH(e.h) + '، ' + fG(e.date) + '</span></div><span class="r">' + n(e.days) + ' يوم</span></div>';
+    }).join('') + '</div>';
+    html += '<div class="card"><h2>ملاحظات اليوم</h2>' + (tn.length ? tn.map(function (x) { return '<div style="margin-bottom:6px">• ' + esc(x.text) + '</div>'; }).join('') : '<div class="mute" style="margin-bottom:10px;font-size:13px">لا توجد ملاحظات. أضف موعدًا أو تذكيرًا سنويًا.</div>') +
+      '<button class="btn soft wide" data-act="day" data-k="' + key(today) + '">＋ إضافة ملاحظة</button></div>';
+    return html;
+  }
+
+  function vMonth() {
+    var mode = S.primary, g = monthGrid(mode, pos.y, pos.m), f = g.days[0], l = g.days[g.days.length - 1], sub, a, b;
+    var title = mode === 'h' ? H_MONTHS[pos.m - 1] + ' ' + n(pos.y) + ' هـ' : G_MONTHS[pos.m - 1] + ' ' + n(pos.y) + ' م';
+    if (mode === 'h') { a = G_MONTHS[f.date.getMonth()]; b = G_MONTHS[l.date.getMonth()]; sub = a + (a === b ? '' : ' – ' + b) + ' ' + n(l.date.getFullYear()) + ' م'; }
+    else { a = H_MONTHS[f.h.m - 1]; b = H_MONTHS[l.h.m - 1]; sub = a + (a === b ? '' : ' – ' + b) + ' ' + n(l.h.y) + ' هـ'; }
+    var html = '<div class="mhead"><button class="nav y" data-act="mv" data-v="-12" aria-label="السنة السابقة">››</button><button class="nav" data-act="mv" data-v="-1" aria-label="الشهر السابق">›</button>' +
+      '<div class="ttl"><b>' + title + '</b><span>' + sub + '</span></div><button class="nav" data-act="mv" data-v="1" aria-label="الشهر التالي">‹</button><button class="nav y" data-act="mv" data-v="12" aria-label="السنة التالية">‹‹</button></div>';
+    html += '<div class="wk">' + [0, 1, 2, 3, 4, 5, 6].map(function (i) { return '<span>' + WD_S[(S.weekStart + i) % 7] + '</span>'; }).join('') + '</div><div class="grid">';
+    var tk = key(today);
+    g.cells.forEach(function (c) {
+      if (!c) { html += '<div class="cell empty"></div>'; return; }
+      var big = mode === 'h' ? c.h.d : c.date.getDate(), small = mode === 'h' ? c.date.getDate() : c.h.d;
+      var ev = c.ev.filter(function (e) { return !e.minor; }), top = ev.filter(function (e) { return e.type === 'eid'; })[0] || ev[0];
+      var hasNote = NOTES.some(function (x) { return noteHit(x, c.date, c.h); });
+      var cls = 'cell' + (key(c.date) === tk ? ' today' : '') + (c.date.getDay() === 5 ? ' fri' : '') + (top && top.type === 'eid' ? ' eidday' : '');
+      html += '<button class="' + cls + '" data-act="day" data-k="' + key(c.date) + '"><b class="num">' + n(big) + '</b><i class="num">' + n(small) + '</i><span class="dots">' +
+        (top ? '<span class="dot ' + top.type + '"></span>' : '') + (hasNote ? '<span class="dot note"></span>' : '') + '</span></button>';
+    });
+    html += '</div><div style="display:flex;justify-content:center"><button class="btn soft" data-act="goToday">اليوم</button></div>';
+    var listed = g.days.map(function (d) { return { d: d, ev: d.ev.filter(function (e) { return !e.minor; }) }; }).filter(function (x) { return x.ev.length; });
+    if (listed.length) html += '<div class="card list"><h2>مناسبات هذا الشهر</h2>' + listed.map(function (x) {
+      var dl = diffDays(today, x.d.date);
+      return '<button class="it" data-act="day" data-k="' + key(x.d.date) + '"><span class="dot ' + x.ev[0].type + '"></span><div class="t"><b>' + x.ev.map(function (e) { return esc(e.name); }).join('، ') +
+        '</b><span>' + fH(x.d.h) + '، ' + fG(x.d.date) + '</span></div><span class="r mute">' + (dl === 0 ? 'اليوم' : dl > 0 ? 'بعد ' + n(dl) : 'منذ ' + n(-dl)) + '</span></button>';
+    }).join('') + '</div>';
+    return html;
+  }
+
+  function fld(id, label, val, w) { return '<div class="fld" style="' + (w ? 'flex:' + w : 'flex:1') + '"><label for="' + id + '">' + label + '</label><input type="number" inputmode="numeric" id="' + id + '" value="' + val + '"></div>'; }
+  function dateFields(p, cal, d) {
+    var v = cal === 'g' ? (d ? { d: d.getDate(), m: d.getMonth() + 1, y: d.getFullYear() } : { d: '', m: '', y: '' }) : (d ? toH(d) : { d: '', m: '', y: '' });
+    return '<div class="flds">' + fld(p + 'd', 'اليوم', v.d) + fld(p + 'm', 'الشهر', v.m) + fld(p + 'y', 'السنة', v.y, 1.5) + '</div>';
+  }
+  function readDate(p, cal) {
+    var y = parseInt(document.getElementById(p + 'y').value, 10), m = parseInt(document.getElementById(p + 'm').value, 10), d = parseInt(document.getElementById(p + 'd').value, 10);
+    if (!y || !m || !d || m < 1 || m > 12 || d < 1) return null;
+    if (cal === 'g') { if (y < 1901 || y > 2076 || d > gdim(y, m)) return null; return noon(y, m, d); }
+    if (y < HMIN || y > HMAX || d > hdim(y, m)) return null;
+    return fromH(y, m, d);
+  }
+  var toolCal = { conv: 'g', age: 'g', diff: 'g' };
+  function kv(k, v) { return '<div class="kv"><span>' + k + '</span><b>' + v + '</b></div>'; }
+  function ymdT(x) { return n(x.y) + ' سنة، ' + n(x.m) + ' شهر، ' + n(x.d) + ' يوم'; }
+
+  function vTools() {
+    var h = '<div class="seg">' + [['conv', 'المحوّل'], ['age', 'العمر'], ['diff', 'الفرق بين تاريخين']].map(function (t) {
+      return '<button data-act="tool" data-v="' + t[0] + '" class="' + (tool === t[0] ? 'on' : '') + '">' + t[1] + '</button>';
+    }).join('') + '</div>';
+    var cal = toolCal[tool];
+    if (tool === 'conv') {
+      h += '<div class="seg">' + [['g', 'ميلادي ← هجري'], ['h', 'هجري ← ميلادي']].map(function (o) { return '<button data-act="tcal" data-v="' + o[0] + '" class="' + (cal === o[0] ? 'on' : '') + '">' + o[1] + '</button>'; }).join('') + '</div>';
+      h += dateFields('a', cal, today) + '<div class="card res" id="res"></div>';
+    } else if (tool === 'age') {
+      h += '<div class="seg">' + [['g', 'الميلاد ميلاديًا'], ['h', 'الميلاد هجريًا']].map(function (o) { return '<button data-act="tcal" data-v="' + o[0] + '" class="' + (cal === o[0] ? 'on' : '') + '">' + o[1] + '</button>'; }).join('') + '</div>';
+      h += dateFields('a', cal, null) + '<div class="card res" id="res"></div>';
+    } else {
+      h += '<div class="seg">' + [['g', 'أدخل ميلاديًا'], ['h', 'أدخل هجريًا']].map(function (o) { return '<button data-act="tcal" data-v="' + o[0] + '" class="' + (cal === o[0] ? 'on' : '') + '">' + o[1] + '</button>'; }).join('') + '</div>';
+      h += '<div class="mute" style="font-size:13px">من تاريخ</div>' + dateFields('a', cal, today) + '<div class="mute" style="font-size:13px">إلى تاريخ</div>' + dateFields('b', cal, today) + '<div class="card res" id="res"></div>';
+    }
+    return h;
+  }
+  function updateTool() {
+    var el = document.getElementById('res'); if (!el) return;
+    var cal = toolCal[tool], a = readDate('a', cal), html = '';
+    if (tool === 'conv') {
+      if (!a) html = '<span class="mute">أدخل تاريخًا صحيحًا (هجري ' + n(HMIN) + '–' + n(HMAX) + '، ميلادي ' + n(1901) + '–' + n(2076) + ')</span>';
+      else { var dl = diffDays(today, a); html = '<div class="mute" style="font-size:13px">' + WD[a.getDay()] + '</div><div class="big">' + (cal === 'g' ? fH(toH(a)) : fG(a)) + '</div><div class="mute" style="font-size:13px">' + (dl === 0 ? 'اليوم' : dl > 0 ? 'بعد ' + n(dl) + ' يوم من اليوم' : 'منذ ' + n(-dl) + ' يوم') + '</div>'; }
+    } else if (tool === 'age') {
+      if (!a || diffDays(a, today) < 0) html = '<span class="mute">أدخل تاريخ الميلاد (يجب أن يكون في الماضي)</span>';
+      else { var d = dateDiff(a, today), nb = nextBirthday(a, today);
+        html = '<div class="mute" style="font-size:13px;margin-bottom:4px">وُلدت في ' + fG(a) + ' الموافق ' + fH(toH(a)) + '</div>' + kv('عمرك بالميلادي', ymdT(d.g)) + kv('عمرك بالهجري', ymdT(d.h)) +
+          kv('مجموع الأيام', n(d.total) + ' يوم (' + n(d.weeks) + ' أسبوع)') + kv('عيد ميلادك الميلادي', 'بعد ' + n(nb.g) + ' يوم') + kv('عيد ميلادك الهجري', 'بعد ' + n(nb.h) + ' يوم (' + fG(nb.hDate) + ')'); }
+    } else {
+      var b = readDate('b', cal);
+      if (!a || !b) html = '<span class="mute">أدخل تاريخين صحيحين</span>';
+      else { var x = dateDiff(a, b); html = '<div class="big">' + n(x.total) + ' يوم</div>' + kv('بالأسابيع', n(x.weeks) + ' أسبوع و' + n(x.rest) + ' يوم') + kv('بالميلادي', ymdT(x.g)) + kv('بالهجري', ymdT(x.h)); }
+    }
+    el.innerHTML = html;
+  }
+
+  function vSettings() {
+    return '<div class="card stack"><h2>التقويم الأساسي</h2>' + seg('primary', [['h', 'هجري'], ['g', 'ميلادي']], S.primary) +
+      '<div class="mute" style="font-size:12.5px">الرقم الكبير حسب اختيارك، والصغير للتقويم الآخر في كل يوم.</div></div>' +
+      '<div class="card"><h2>تعديل التاريخ الهجري</h2><div class="mute" style="font-size:12.5px">إذا اختلف يوم بداية الشهر عندك عن التقويم (رؤية الهلال)، عدّله بيوم أو يومين.</div>' +
+      '<div class="step"><button data-act="adj" data-v="1" aria-label="زيادة">＋</button><div class="num">' + (S.adj > 0 ? '+' : '') + n(S.adj) + '<small>' + (S.adj === 0 ? 'حسب أم القرى' : S.adj > 0 ? 'يوم للأمام' : 'يوم للخلف') + '</small></div><button data-act="adj" data-v="-1" aria-label="إنقاص">－</button></div></div>' +
+      '<div class="card stack"><h2>بداية الأسبوع</h2>' + seg('weekStart', [[6, 'السبت'], [0, 'الأحد'], [1, 'الإثنين']], S.weekStart) + '<h2 style="margin-top:6px">الأرقام</h2>' + seg('digits', [['true', '١٢٣ عربية'], ['false', '123 إنجليزية']], String(S.digits)) + '</div>' +
+      '<div class="card"><h2>عن التطبيق</h2><div class="mute" style="font-size:13px">• التقويم الهجري وفق جدول أم القرى (' + n(HMIN) + ' – ' + n(HMAX) + ' هـ)، والحساب كله داخل الصفحة.<br>• طور القمر تقريبي ولا يغني عن رؤية الهلال الشرعية.<br>• ملاحظاتك محفوظة في متصفح جوالك فقط.</div></div>';
+  }
+
+  function render() {
+    renderTabs();
+    $app.innerHTML = view === 'today' ? vToday() : view === 'month' ? vMonth() : view === 'tools' ? vTools() : vSettings();
+    if (view === 'tools') updateTool();
+  }
+
+  /* ---------- نافذة اليوم ---------- */
+  var ov = document.getElementById('ov'), sheet = document.getElementById('sheet');
+  function notesHtml(date) {
+    var h = toH(date), list = NOTES.filter(function (x) { return noteHit(x, date, h); });
+    if (!list.length) return '<div class="mute" style="font-size:13px;margin-bottom:8px">لا توجد ملاحظات لهذا اليوم</div>';
+    return list.map(function (x) { return '<div class="note"><div>' + esc(x.text) + (x.yearly ? '<small>تتكرر كل سنة (' + (x.cal === 'h' ? 'هجري' : 'ميلادي') + ')</small>' : '') + '</div><button data-act="del" data-v="' + x.id + '">حذف</button></div>'; }).join('');
+  }
+  function openSheet(date) {
+    sel = date;
+    var h = toH(date), m = moon(date), dow = date.getDay();
+    var ev = occ(date, h).map(function (e) { return '<div class="ev"><span class="dot ' + e.type + '"></span>' + esc(e.name) + '</div>'; }).join('');
+    sheet.innerHTML = '<div class="mute" style="font-size:13px">' + WD[dow] + '</div><div class="d1">' + (S.primary === 'h' ? fH(h) : fG(date)) + '</div><div class="d2">' + (S.primary === 'h' ? fG(date) : fH(h)) + '</div>' +
+      '<div class="moon" style="margin-bottom:10px">' + moonSvg(m.f, 36) + '<div>' + m.name + '، إضاءة ' + n(m.illum) + '٪ (تقريبي)</div></div>' + ev +
+      ((dow === 1 || dow === 4) ? '<div class="mute" style="font-size:13px">يُستحب صيام يوم ' + WD[dow] + '</div>' : '') +
+      '<h2 style="margin-top:14px">ملاحظاتي</h2><div id="sn">' + notesHtml(date) + '</div>' +
+      '<input type="text" id="nt" placeholder="اكتب ملاحظة أو موعدًا…" maxlength="200">' +
+      '<label class="chk"><input type="checkbox" id="ny"><span>تكرار سنوي (عيد ميلاد، ذكرى…)</span></label>' +
+      '<div id="ncw" hidden style="margin-bottom:10px"><label class="mute" for="nc" style="font-size:12px">يتكرر حسب</label><select id="nc"><option value="h">التاريخ الهجري</option><option value="g">التاريخ الميلادي</option></select></div>' +
+      '<div class="row2"><button class="btn" data-act="add">حفظ</button><button class="btn soft" data-act="close">إغلاق</button></div>';
+    document.getElementById('nc').value = S.primary;
+    ov.hidden = false;
+  }
+  function closeSheet() { ov.hidden = true; sel = null; render(); }
+
+  /* ---------- الأحداث ---------- */
+  document.addEventListener('click', function (e) {
+    if (e.target === ov) { closeSheet(); return; }
+    var b = e.target.closest('[data-act]'); if (!b) return;
+    var act = b.getAttribute('data-act'), v = b.getAttribute('data-v'), k = b.getAttribute('data-k');
+    if (act === 'tab') { view = v; render(); window.scrollTo(0, 0); }
+    else if (act === 'day') openSheet(fromKey(k));
+    else if (act === 'close') closeSheet();
+    else if (act === 'mv') {
+      var t = pos.m + (+v), y = pos.y; while (t > 12) { t -= 12; y++; } while (t < 1) { t += 12; y--; }
+      if (okYear(y)) { pos = { y: y, m: t }; render(); }
+    }
+    else if (act === 'goToday') { pos = startPos(); render(); }
+    else if (act === 'tool') { tool = v; render(); }
+    else if (act === 'tcal') { toolCal[tool] = v; render(); }
+    else if (act === 'set') {
+      S[k] = (k === 'digits') ? (v === 'true') : (k === 'weekStart' ? +v : v);
+      lsSet('hc_settings', S); if (k === 'primary') pos = startPos(); render();
+    }
+    else if (act === 'adj') { S.adj = Math.max(-2, Math.min(2, S.adj + (+v))); lsSet('hc_settings', S); pos = startPos(); render(); }
+    else if (act === 'add' && sel) {
+      var txt = document.getElementById('nt').value.trim(); if (!txt) return;
+      var yearly = document.getElementById('ny').checked, cal = yearly ? document.getElementById('nc').value : S.primary, h = toH(sel);
+      var base = cal === 'h' ? { cal: 'h', y: h.y, m: h.m, d: h.d } : { cal: 'g', y: sel.getFullYear(), m: sel.getMonth() + 1, d: sel.getDate() };
+      NOTES.push(Object.assign({ id: String(Date.now()), text: txt, yearly: yearly }, base)); lsSet('hc_notes', NOTES);
+      document.getElementById('nt').value = ''; document.getElementById('ny').checked = false; document.getElementById('ncw').hidden = true;
+      document.getElementById('sn').innerHTML = notesHtml(sel);
+    }
+    else if (act === 'del' && sel) { NOTES = NOTES.filter(function (x) { return x.id !== v; }); lsSet('hc_notes', NOTES); document.getElementById('sn').innerHTML = notesHtml(sel); }
+  });
+  document.addEventListener('input', function (e) { if (e.target.closest('.flds')) updateTool(); });
+  document.addEventListener('change', function (e) { if (e.target.id === 'ny') document.getElementById('ncw').hidden = !e.target.checked; });
+
+  /* تحديث "اليوم" عند منتصف الليل */
+  setInterval(function () { var t = sod(new Date()); if (key(t) !== key(today)) { today = t; if (ov.hidden) render(); } }, 30000);
+
+  render();
+})();
+</script>
+
+</body></html>
